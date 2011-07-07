@@ -3,6 +3,7 @@
     using System;
 
     using System.Diagnostics;
+    using System.Runtime.CompilerServices;
     using System.Threading;
 
     class Program
@@ -14,6 +15,13 @@
             Console.WriteLine("Press Enter to start.");
             Console.ReadLine();
             Thread.Sleep(500);
+
+            Console.WriteLine("Baseline - log log calls");
+            RunNoLogger();
+            GC.Collect();
+            GC.WaitForFullGCComplete();
+            Thread.Sleep(1000);
+
 
             Settings.LogEnabled = false;
 
@@ -43,10 +51,26 @@
             GC.WaitForFullGCComplete();
             Thread.Sleep(1000);
 
-            Console.WriteLine("Press any key to quit");
+            Console.WriteLine("Press ENTER to quit");
             Console.ReadLine();
         }
 
+        [MethodImplAttribute(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
+        private static void RunNoLogger()
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            for (int i = 0; i < Iterations; i++)
+            {
+                var j = i;
+            }
+
+            stopwatch.Stop();
+            Console.WriteLine("Ellapsed (ms): {0}", stopwatch.ElapsedMilliseconds);
+        }
+
+        [MethodImplAttribute(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         private static void RunCallbackLogger()
         {
             var stopwatch = new Stopwatch();
@@ -64,6 +88,7 @@
             Console.WriteLine("Ellapsed (ms): {0}", stopwatch.ElapsedMilliseconds);
         }
 
+        [MethodImplAttribute(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         private static void RunBasicLogger()
         {
             var stopwatch = new Stopwatch();
