@@ -22,7 +22,6 @@
             GC.WaitForFullGCComplete();
             Thread.Sleep(1000);
 
-
             Settings.LogEnabled = false;
 
             Console.WriteLine("Log Off / Basic");
@@ -68,6 +67,7 @@
 
             stopwatch.Stop();
             Console.WriteLine("Ellapsed (ms): {0}", stopwatch.ElapsedMilliseconds);
+            Console.WriteLine();
         }
 
         [MethodImplAttribute(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
@@ -81,11 +81,12 @@
             {
                 var j = i;
 
-                logger.WriteLog(l => l.LogEntry(String.Format("Iteration: {0}", j)));
+                logger.WriteLog(l => l.LogEntry(String.Format("Callback Iteration: {0}", j)));
             }
 
             stopwatch.Stop();
             Console.WriteLine("Ellapsed (ms): {0}", stopwatch.ElapsedMilliseconds);
+            Console.WriteLine();
         }
 
         [MethodImplAttribute(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
@@ -99,11 +100,12 @@
             {
                 var j = i;
 
-                logger.LogEntry(String.Format("Iteration: {0}", j));
+                logger.LogEntry(String.Format("Basic Iteration: {0}", j));
             }
 
             stopwatch.Stop();
             Console.WriteLine("Ellapsed (ms): {0}", stopwatch.ElapsedMilliseconds);
+            Console.WriteLine();
         }
     }
 }
